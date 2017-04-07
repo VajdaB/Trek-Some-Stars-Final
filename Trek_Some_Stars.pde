@@ -1,3 +1,13 @@
+import ddf.minim.*; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
+
+AudioPlayer player;
+Minim minim;
+
 // Credit to my friend Meri for
 // giving me inspiration for the title screen.
 
@@ -16,30 +26,32 @@ boolean isSplash;
 
 Planet[] planets = new Planet[50];
 
-PImage texture; //<>//
+PImage texture;
 
 PImage intro;
 
 float rotX = 0;
-float rotY = 0; //<>//
-float x, y, z; //<>//
+float rotY = 0;
+float x, y, z;
 int q = 70;
 
 float entpos = 0;
 
-void setup() //<>//
+void setup()
 {
-    fullScreen(P3D); //<>//
+    fullScreen(P3D);
         isSplash = true;
         intro = loadImage("TREK_SOME_STARS.jpg");
-    noStroke(); //<>//
+    noStroke();
     noCursor();
+    minim = new Minim(this);
+    player = minim.loadFile("maintheme.mp3", 2048);
     box = createShape(BOX, 50000);
     texture= loadImage("stars.jpg");
     box.setTexture(texture);
   camera = new KoraCam(this);
       for (int i = 0; i < 50; i = i+1)
-        { //<>//
+        {
           String tex = "blue.jpg";
           int rand = (int)random(0, 17);
           if (rand == 0)
@@ -129,11 +141,11 @@ void setup() //<>//
           new PVector(random(-14500, 14500), random(-14500, 14500), random(-14500, 14500)),
                                   0, PI/random(110,360), tex);
           //int _size, PVector _location, float _rotY, float _rotSpeed, String tex)
-        } //<>//
-  Enterprise = loadShape("ncc1701.obj"); //<>//
+        }
+  Enterprise = loadShape("ncc1701.obj");
     intro.resize(width, height);
     Earth = new Planet(600, new PVector(-1500, 15000, 15000), 0, PI/180, "earth.jpg");
-} //<>//
+}
 
 void draw()
 {  
@@ -164,12 +176,12 @@ void draw()
     planets[i].Render();
     }
     Earth.Render();
-  } //<>//
+  }
 }
 
 void keyPressed()
 {
-  if(key == ' ') //<>//
+  if(key == ' ')
       {
        q = 1;
        frustum(-100, 100, -56, 56, q, 50000);
@@ -178,6 +190,7 @@ void keyPressed()
       {
        isSplash = false;
        frustum(-100, 100, -56, 56, q, 50000); 
+       player.play();
       }
 }
 
